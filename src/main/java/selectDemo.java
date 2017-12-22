@@ -1,5 +1,5 @@
 
-
+import model.MybatisDemo;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -27,11 +27,38 @@ public class selectDemo {
 
         //2. 从SqlSession工厂 SqlSessionFactory中创建一个SqlSession，进行数据库操作
         SqlSession sqlSession=sqlSessionFactory.openSession();
+/*
+        MybatisDemo mybatisDemo;
+
+        mybatisDemo.setmAge(16);
+        user.setmName("小三");
+       //3.使用SqlSession查询*/
+        MybatisDemo mybatisDemo=new MybatisDemo();
+        long starttime= System.currentTimeMillis();
+        System.out.println("开始查询时间"+starttime);
+        mybatisDemo= sqlSession.selectOne("dao.MybatisDemoMapper.selectByPrimaryKey" ,1);
+
+        System.out.println(mybatisDemo);
 
 
-        //3.使用SqlSession查询
-        User U=sqlSession.selectOne("dao.Mapper.selectById",2);
+        long endtime=System.currentTimeMillis();
+        long time =endtime-starttime;
+        System.out.println("花费时间"+time);
 
-        System.out.println(U);
+        long starttime2=System.currentTimeMillis();
+        System.out.println("第二次查询开始"+starttime2);
+
+        MybatisDemo m=new MybatisDemo();
+        m.setmAge(123);
+        m.setmName("123");
+
+
+        int s= sqlSession.insert("dao.MybatisDemoMapper.insert",m);
+        System.out.println(s+"***********************");
+        long endtime2=System.currentTimeMillis();
+        long time2=endtime2-starttime2;
+        System.out.println("第二次插入所用时间"+time2);
+        //System.out.println(resultCount);
+        sqlSession.commit();
     }
 }
